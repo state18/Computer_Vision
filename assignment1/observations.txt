@@ -1,0 +1,36 @@
+1) width 9.687% - height  6.416_____location: 493, 293
+2) width 12.42% - height 5.375____location: 187, 390
+3) width 11.46 - height 4.16____location: 904, 1849
+4) width 7.12 - height  2.00     location: 209, 334
+5) width 12.13 - height 9.83  location: 87, 163
+6) width 13.02 - height 4.84 location: 109, 165
+7) width 15.44 - height 4.18 location: 903, 909
+8) width 6.796 - height 4.75 location: 936, 345
+9) width 5.333 - height 2.5 location: 206, 224
+10) width 14.39 - height 7.1 location: 197, 58
+
+new patches only iris and pupil
+1) 537,310, 80, 53
+2) 207,392, 42,36
+3) 1046,1872, 284, 178
+4) 218,336, 30,16
+5) 98,164, 22, 15
+6) 123,168, 31,22
+7) 821,925, 100,94
+8) 1523,343, 101, 70
+9) 213,227, 19, 10
+10) 102,63, 24,21
+
+2,3,6 and 7 seem to have similar width/height ratios. Let's compare these first.
+
+
+New algorithm plan... 'Color matching' - a less precise approach at histogram matching.
+- Form color buckets for colors such as black, white, green, blue, brown, etc...
+	Doing this will be easier if working in the HSV space, and defining ranges for Hue.
+- Some buckets may be weighted differently.
+- Ideally, we'll have color buckets for eyes of all common colors.
+- Try to make the algorithm at least work for the validation set.
+- Try giving patch a better score if it is near the middle of the image.
+- Keep track of a certain number of top scoring image patches. The two selected to be the eyes should be
+	pretty similar to one another. ex- If the best scoring one is more similar to the third best than second, choose those two.
+- Also, when determining which patches to choose as eyes, measure the distance between them (especially height, should be minimal).

@@ -16,26 +16,26 @@ features = double(features);
 % representation of the image.
 
 % load in words' 128 dimensional features from training.
+% Variable is called k_words
 load model.mat;
 
-% Assign each feature from the image to a word. Words' indices are
-% represented by their position in the label_train
+% Assign each feature from the image to a word.
+% 'feat' is the histogram representation of the bag of words.
+feat = zeros(1,size(k_words,1));
+
 for i=1:size(features,1)
     min_dist = Inf;
-    for j=1:length(label_train)
-        for k=1:size(label_train{j})
-            curr_dist = sum(abs(features(i,:) - label_train{j}(k,:)));
-            if curr_dist < min_dist
-                % TODO not right, just testing
-                feat(i) = j;
-                min_dist = curr_dist;
-            end
+    for j=1:size(k_words,1)
+        curr_dist = sum(abs(features(i,:) - k_words(j,:)));
+        if curr_dist < min_dist
+            closest_word = j;
+            min_dist = curr_dist;           
         end
     end
+    % Accumulate histogram.
+    feat(closest_word) = feat(closest_word) + 1;
 end
 
-
-feat = datasample(feat,50);
 % feat = rand([1,100]); % dummy, replace this with your algorithm
 
 end

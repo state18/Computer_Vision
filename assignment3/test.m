@@ -2,7 +2,7 @@
 % I will use my own script for grading. 
 % It will be exactly the same as this one but with different testing image.
 clear; clc; close all;
-
+tic;
 img_path = './val/';
 class_num = 30;
 img_per_class = 20;
@@ -28,8 +28,11 @@ for i = 1:length(folder_dir)-2
     end
     
 end
+% SAM'S EDIT FOR DEBUGGING
+save('feat.mat','feat');
 
 predict_label = your_kNN(feat);
 
 accuracy = sum(predict_label==label) ./ img_num;
 display(accuracy);
+toc;

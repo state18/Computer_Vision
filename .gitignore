@@ -5,3 +5,4 @@ assignment2/images*
 assignment3/model.mat
 assignment3/train/*
 assignment3/val/*
+assignment3/*.mat

@@ -8,8 +8,7 @@ class_num = 30;
 img_per_class = 20;
 img_num = class_num .* img_per_class;
 % TODO CHANGE THIS BACK DO NOT FORGET!!!!!
-% feat_dim = size(feature_extraction(imread('./val/Balloon/329060.JPG')),2);
-feat_dim = 800;
+feat_dim = size(feature_extraction(imread('./val/Balloon/329060.JPG')),2);
 
 folder_dir = dir(img_path);
 feat = zeros(img_num,feat_dim);

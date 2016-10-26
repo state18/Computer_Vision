@@ -7,7 +7,7 @@ function predict_label = your_kNN(feat)
 % Load in bags of words from training images.
 % needed variable is called labeled_hist_of_words
 load model.mat;
-
+load rgb_hists.mat;
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Compute tf and idf weights here. Apply them later.
 
@@ -68,7 +68,7 @@ end
 
 
 % Compare histograms and find k nearest ones.
-k = 30;
+k = 10;
 rgb_weight = 1;
 curr_im = 1;
 for i=1:size(feat,1)
@@ -86,7 +86,7 @@ for i=1:size(feat,1)
             % above code when doing tf for query images.
             
             % Manhattan distance
-            feat_distances(curr_im,1) = sum(abs(qtf(i,:) .* idf - ttf(curr_im,:) .* idf ));
+            feat_distances(curr_im,1) = sum(abs(qtf(i,:) .* idf -  ttf(curr_im,:) .* idf ));
 %             feat_distances(curr_im,1) = sum(abs(feat(i,:) - curr_labeled_set(n,:)));
             
             % Euclidean distance
@@ -98,20 +98,18 @@ for i=1:size(feat,1)
 
             feat_distances(curr_im,2) = j;
             
-            % RGB difference...
-            % TODO: Fill in with query RGB histogram...
-            query_rgb = 0;
             
             
-            rgb_distances(curr_im,1) = sum(abs(query_rgb - curr_labeled_hist(n,:,:) )) .* rgb_weight;
+                        
+            % Compare query image RGB hist to train RGB hist... This value
+            % will be upscalled/downscaled by a reduction factor based on
+            % manual optimization.
+            rgb_distances(curr_im,1) = sum(sum(abs(rgb_hists(i,:,:) - curr_labeled_hist(n,:,:)))) .* rgb_weight;
+            rgb_distances(curr_im,2) = j;
             
             curr_im = curr_im + 1;
         end
     end
-    
-    % Mix feature bag of words distance with rgb histogram difference.
-    feat_distances = feat_distances + rgb_distances;
-    
     
     
     
@@ -119,9 +117,22 @@ for i=1:size(feat,1)
     [sorted_dist,indx] = sort(feat_distances(:,1),1);
     sorted_dist = [sorted_dist, feat_distances(indx,2)];
     
-    predict_label(i) = mode(sorted_dist(1:k,2));
+    % Sort rgb too
+    [sorted_dist_rgb,indx] = sort(rgb_distances(:,1),1);
+    sorted_dist_rgb = [sorted_dist_rgb, rgb_distances(indx,2)];
+    
+    % Choose k nearest features and k nearest features and pool them
+    % together. The label that appears the most is chosen.
+    % TODO Replace mode function with own code that breaks ties
+    % appropriately.
+    predict_label(i) = mode([sorted_dist(1:k,2); sorted_dist_rgb(1,2)]);
     curr_im = 1;
 end
+
+% Delete rgb histogram data file, so it doesn't interfere with any future
+% runs of the algorithm.
+
+% delete('rgb_hists.mat');
 
 predict_label = predict_label';
 % predict_label = mode(feat);

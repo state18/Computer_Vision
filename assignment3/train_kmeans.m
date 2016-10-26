@@ -78,7 +78,6 @@ while ~converged
         end
     end
     
-    % TODO find better convergence criteria!
     num_it = num_it + 1;
     disp(num_it);
     

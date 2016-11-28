@@ -34,12 +34,14 @@ for i = 1:length(folder_dir)-2
         all_feat_train{(i-1)*img_per_class+j} = train_feature_extraction(img);
         
                 
+
         Red = imhist(img(:,:,1),32);
         Green = imhist(img(:,:,2),32);
         Blue = imhist(img(:,:,3),32);
 
         % Normalize
         labeled_rgb_hists{i}(j,:,:) = [Red(:), Green(:), Blue(:)] ./ (size(img,1) * size(img,2));
+
 
     end
     

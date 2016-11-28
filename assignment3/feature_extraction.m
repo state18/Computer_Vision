@@ -38,9 +38,11 @@ for i=1:size(features,1)
     feat(closest_word) = feat(closest_word) + 1;
 end
 
+
 Red = imhist(colored_img(:,:,1),32);
 Green = imhist(colored_img(:,:,2),32);
 Blue = imhist(colored_img(:,:,3),32);
+
 
 % Normalize
 rgb_hist = [Red(:), Green(:), Blue(:)] ./ (size(colored_img,1) * size(colored_img,2));

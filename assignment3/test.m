@@ -7,9 +7,7 @@ img_path = './val/';
 class_num = 30;
 img_per_class = 20;
 img_num = class_num .* img_per_class;
-% TODO CHANGE THIS BACK DO NOT FORGET!!!!!
-% feat_dim = size(feature_extraction(imread('./val/Balloon/329060.JPG')),2);
-feat_dim = 800;
+feat_dim = size(feature_extraction(imread('./val/Balloon/329060.JPG')),2);
 
 folder_dir = dir(img_path);
 feat = zeros(img_num,feat_dim);
@@ -30,11 +28,8 @@ for i = 1:length(folder_dir)-2
     end
     
 end
-% SAM'S EDIT FOR DEBUGGING
-save('feat.mat','feat');
 
 predict_label = your_kNN(feat);
 
 accuracy = sum(predict_label==label) ./ img_num;
 display(accuracy);
-toc;

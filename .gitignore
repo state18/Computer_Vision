@@ -6,3 +6,6 @@ assignment3/model.mat
 assignment3/train/*
 assignment3/val/*
 assignment3/*.mat
+
+assignment4/CodeDataset/train/*
+assignment4/CodeDataset/val/*

@@ -13,4 +13,3 @@ interestPoints = detectSURFFeatures(img);
 features = double(features);
 
 end
-

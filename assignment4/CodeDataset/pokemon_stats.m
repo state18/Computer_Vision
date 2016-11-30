@@ -3,8 +3,20 @@ function [ID, CP, HP, stardust, level, cir_center] = pokemon_stats (img, model)
 % INPUT: image; model(a struct that contains your classification model, detector, template, etc.)
 % OUTPUT: ID(pokemon id, 1-201); level(the position(x,y) of the white dot in the semi circle); cir_center(the position(x,y) of the center of the semi circle)
 
+% One of the images in the validation set crashes the program here because
+% it is a weirdly formatted image.
+try
 gray_img = rgb2gray(img);
 [rows,cols] = size(gray_img);
+catch 
+    ID = 1;
+    CP = 1;
+    HP = 1;
+    stardust = 1;
+    level = [1,1];
+    cir_center = [1,1]; 
+    return;
+end
 
 edge_img = edge(gray_img,'Canny');
 binary_img = im2bw(gray_img);
@@ -28,10 +40,10 @@ cir_center = [355,457];
 % recognition within those boxes.
 
 
-% Circle is believed to be in top half of image.
-circle_img = edge_img(1:round(rows / 2),:);
-% Circle is estimated to be 25 to 30% of image size in radius.
-radiusRange = round(size(circle_img,1) * .25 : 2 : size(circle_img,2) * .3);
+% % Circle is believed to be in top half of image.
+% circle_img = edge_img(1:round(rows / 2),:);
+% % Circle is estimated to be 25 to 30% of image size in radius.
+% radiusRange = round(size(circle_img,1) * .25 : 2 : size(circle_img,2) * .3);
 % [circleCenter, circleRadius] = computeCircleLocation(circle_img,radiusRange);
 
 % Cutting out the image patches where HP, CP, and stardust is believed to
@@ -46,15 +58,24 @@ hp_img = gray_img(ceil(rows * .48):ceil(rows * .55), ceil(cols * .38):ceil(cols 
 hp_img = im2bw(hp_img, graythresh(hp_img));
 % imshow(hp_img);
 HP = computeHP(hp_img);
-
-% CP should be 2% to 20% from top, and centered at 28% to 62% vertically
+% 
+% % CP should be 2% to 20% from top, and centered at 28% to 62% vertically
 cp_img = gray_img(ceil(rows * .02):ceil(rows * .2), ceil(cols * .28):ceil(cols * .62));
-cp_img = im2bw(cp_img, graythresh(cp_img));
-% imshow(cp_img);
-
-% Stardust should be
+% cp_img = im2bw(cp_img, graythresh(cp_img));
+% % imshow(cp_img);
+CP = computeCP(cp_img);
+% 
+% % Stardust should be
 sd_img = gray_img(ceil(rows * .7):ceil(rows * .85), ceil(cols * .35):ceil(cols * .8));
-sd_img = im2bw(sd_img, graythresh(sd_img));
-imshow(sd_img);
+% sd_img = im2bw(sd_img, graythresh(sd_img));
+% imshow(sd_img);
+stardust = computeStardust(sd_img);
+
+% Find the Pokemon's id!
+id_img = img(ceil(rows * .15):ceil(rows * .45), ceil(cols * .3):ceil(cols * .7),:);
+% Load in training histograms
+% trained_hists = load('train_hists.mat');
+% trained_hists = trained_hists.labeled_rgb_hists;
+ID = computeID(id_img, model);
 
 end

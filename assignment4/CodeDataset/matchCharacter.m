@@ -8,6 +8,6 @@ function [ match_results ] = matchCharacter( input_patches )
 match_results = zeros(length(input_patches),1);
 
 
-
+  
 end
 

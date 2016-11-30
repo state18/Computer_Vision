@@ -127,7 +127,7 @@ for i=1:length(bounded_imgs)
         continue;
     end
 
-    if minMaxReference(closest_slash,4) < minMaxReference(i,4)
+    if minMaxReference(closest_slash,4) > minMaxReference(i,4)
         continue;
     end
     

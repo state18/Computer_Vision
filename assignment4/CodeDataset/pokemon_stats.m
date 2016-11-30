@@ -56,28 +56,28 @@ level = computeLevel(gray_img);
 
 % % HP should be 48% to 55% of image size from first row.
 % % and 38% to 62% from first column.
-% hp_img = gray_img(ceil(rows * .48):ceil(rows * .55), ceil(cols * .38):ceil(cols * .62));
-% hp_img = im2bw(hp_img, graythresh(hp_img));
+hp_img = gray_img(ceil(rows * .48):ceil(rows * .55), ceil(cols * .38):ceil(cols * .62));
+hp_img = im2bw(hp_img, graythresh(hp_img));
 % % imshow(hp_img);
-% HP = computeHP(hp_img);
+HP = computeHP(hp_img);
 % % 
 % % % CP should be 2% to 20% from top, and centered at 28% to 62% vertically
-% cp_img = gray_img(ceil(rows * .02):ceil(rows * .2), ceil(cols * .28):ceil(cols * .62));
-% % cp_img = im2bw(cp_img, graythresh(cp_img));
+cp_img = gray_img(ceil(rows * .02):ceil(rows * .2), ceil(cols * .28):ceil(cols * .62));
+%cp_img = im2bw(cp_img, graythresh(cp_img));
 % % % imshow(cp_img);
-% CP = computeCP(cp_img);
-% % 
-% % % Stardust should be
-% sd_img = gray_img(ceil(rows * .7):ceil(rows * .85), ceil(cols * .35):ceil(cols * .8));
-% % sd_img = im2bw(sd_img, graythresh(sd_img));
-% % imshow(sd_img);
-% stardust = computeStardust(sd_img);
-% 
-% % Find the Pokemon's id!
-% id_img = img(ceil(rows * .15):ceil(rows * .45), ceil(cols * .3):ceil(cols * .7),:);
-% % Load in training histograms
-% % trained_hists = load('train_hists.mat');
-% % trained_hists = trained_hists.labeled_rgb_hists;
-% ID = computeID(id_img, model);
+CP = computeCP(cp_img);
+
+% Stardust should be
+sd_img = gray_img(ceil(rows * .7):ceil(rows * .85), ceil(cols * .35):ceil(cols * .8));
+%sd_img = im2bw(sd_img, graythresh(sd_img));
+% imshow(sd_img);
+stardust = computeStardust(sd_img);
+
+% Find the Pokemon's id!
+id_img = img(ceil(rows * .15):ceil(rows * .45), ceil(cols * .3):ceil(cols * .7),:);
+% Load in training histograms
+% trained_hists = load('train_hists.mat');
+% trained_hists = trained_hists.labeled_rgb_hists;
+ID = computeID(id_img, model);
 
 end

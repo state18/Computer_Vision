@@ -1,6 +1,5 @@
 function [ num ] = word2num( word )
-%WORD2NUM Summary of this function goes here
-%   Detailed explanation goes here
+%WORD2NUM Convert English word to digit string
 
 switch word
     case 'zero'

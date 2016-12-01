@@ -1,13 +1,7 @@
-function [ HP ] = computeHP( img )
-%COMPUTEHP Summary of this function goes here
-%   Detailed explanation goes here
+function [ HP ] = computeHP( img, char_templates )
 
 img = ~img;
-% Get binary image for now (use colored later and prune out pixels that are
-% not close to the target color of the HP text.
-% gray_img = rgb2gray(img);
-% binary_img = im2bw(gray_img, graythresh(gray_img));
-% imshow(img);
+
 % Do connected component labeling to pick out individual text characters.
 conn_comp = bwconncomp(img);
 
@@ -26,16 +20,13 @@ for i=1:length(conn_comp.PixelIdxList)
     
     bounded_imgs{i} = img(minX:maxX, minY:maxY);
     minMaxReference(i,:) = [minX,maxX,minY,maxY];
-%     imshow(bounded_imgs{i});
+
 end
 
 % Perform template matching on the bounded labeled components. Try to find
 % H and P letters to give us an idea of which ones are relevant. Another
 % desirable trait in the numbers we want is being on the same/similar row
 % as one another.
-
-char_templates = load('char_templates.mat');
-char_templates = char_templates.char_templates;
 
 fields = fieldnames(char_templates);
 closest_matches = cell(length(bounded_imgs),1);

@@ -10,15 +10,15 @@ col_max = .95;
 circle_img = gray_img(ceil(o_rows * row_min):ceil(o_rows * row_max), ceil(o_cols * col_min):ceil(o_cols * col_max));
 
 [c_rows, c_cols] = size(circle_img);
-radiusRange = round(size(circle_img,2) * .008 : 1 : size(circle_img,2) * .02);
+radiusRange = round(c_cols * .008 : 1 : c_cols * .02);
 % White out the bottom middle area to avoid false positive of pokemon eyes.
 circle_img(ceil(c_rows * .45):ceil(c_rows * 1), ceil(c_cols * .2):ceil(c_cols * .8)) = 255;
 circle_img(ceil(c_rows * .3):ceil(c_rows * .45), ceil(c_cols * .4):ceil(c_cols * .6)) = 255;
 
-[circles, ~] = imfindcircles(circle_img, [radiusRange(1), radiusRange(end)]);
+[circles, ~] = imfindcircles(circle_img, [radiusRange(1), radiusRange(end)], 'Sensitivity', .9);
 
 % Initialize, in case no circle was found.
-level = [ceil(.5 * o_rows),ceil(.5 * o_cols)];
+level = [ceil(.5 * o_cols),ceil(.25 * o_rows)];
     
 if ~isempty(circles)
     level = circles(1,:);

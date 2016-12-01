@@ -1,16 +1,9 @@
+
+% I compute RGB histograms of training images here.
+
 img_path = './train/';
 img_dir = dir([img_path,'*CP*']);
 img_num = length(img_dir);
-% load ('./model.mat');
-
-% ID_gt = zeros(img_num,1);
-% CP_gt = zeros(img_num,1);
-% HP_gt = zeros(img_num,1);
-% stardust_gt = zeros(img_num,1);
-% ID = zeros(img_num,1);
-% CP = zeros(img_num,1);
-% HP = zeros(img_num,1);
-% stardust = zeros(img_num,1);
 
 
 model = struct('id',[],'rgb_hist',[]);

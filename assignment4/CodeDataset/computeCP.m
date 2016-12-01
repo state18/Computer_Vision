@@ -1,11 +1,8 @@
-function [ CP ] = computeCP( gray_img )
-%COMPUTECP Summary of this function goes here
-%   Detailed explanation goes here
+function [ CP ] = computeCP( gray_img, char_templates )
 
 % Replace pixels in cutout image that are not "white" enough (wow that
 % sounds bad)
 binary_img = gray_img > 235;
-% imshow(binary_img);
 
 % Do connected component labeling to pick out individual text characters.
 conn_comp = bwconncomp(binary_img);
@@ -25,7 +22,7 @@ for i=1:length(conn_comp.PixelIdxList)
     
     bounded_imgs{i} = binary_img(minX:maxX, minY:maxY);
     minMaxReference(i,:) = [minX,maxX,minY,maxY];
-%     imshow(bounded_imgs{i});
+
 end
 
 % Perform template matching on the bounded labeled components. Try to find
@@ -33,8 +30,6 @@ end
 % desirable trait in the numbers we want is being on the same/similar row
 % as one another.
 
-char_templates = load('char_templates.mat');
-char_templates = char_templates.char_templates;
 
 fields = fieldnames(char_templates);
 closest_matches = cell(length(bounded_imgs),1);
@@ -61,8 +56,7 @@ end
 
 
 % If 'CP' is found, prune out the other characters not near the
-% same row as them. Also cut out the characters to the right of slash. The
-% remaining values read from left to right are the HP value.
+% same row as them. 
 c_rows = [];
 p_rows = [];
 
